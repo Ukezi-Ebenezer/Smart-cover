@@ -1,73 +1,187 @@
-# Luxe Legacy
+# 🛡️ Smart Cover — Protect What Matters. Grow What's Yours.
 
-Using the uploaded documents, this is where I want you to draw your details from because I want to design for this insurance company, I want it to be a multi page website where there will be a "Home Section"  and also a page where the user can make book a call, I need you need to use this prompt as your design inspiration.
+> A modern, full-stack insurance platform built for Nigerian families who want clarity, security, and real returns from their financial cover.
 
-prompt:
-"# Summary
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen?style=flat-square)](https://github.com/Ukezi-Ebenezer/Smart-cover)
+[![React](https://img.shields.io/badge/React-19-blue?style=flat-square&logo=react)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
+[![TanStack Start](https://img.shields.io/badge/TanStack_Start-1.17-orange?style=flat-square)](https://tanstack.com/start)
+[![Supabase](https://img.shields.io/badge/Supabase-Powered-green?style=flat-square&logo=supabase)](https://supabase.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4-38bdf8?style=flat-square&logo=tailwindcss)](https://tailwindcss.com/)
 
-Create a high-end luxury real estate portfolio landing page with a minimalist, editorial design. Use a neutral earth-tone palette (#FDFCF9, #1A1A1A, #8B7D6B) combined with gold accents (#D4AF37). Incorporate bold sans-serif typography, generous whitespace, and a sophisticated lead-capture form.
+---
 
-# Style
+## 📖 About
 
-The style is defined by a clean, upscale 'Modern Luxury' aesthetic. It pairs the heavy weights of 'Cabinet Grotesk' for headlines with the clean, geometric readability of 'Satoshi' for body text. The color scheme is predominantly cream and charcoal, creating a high-contrast yet warm atmosphere. Micro-interactions focus on smooth transitions, such as image scaling and sliding underlines.
+**Smart Cover** is a premium insurance advisory and policy management platform. It helps individuals and families in Nigeria find the right life, savings, and investment insurance plans — with full transparency on costs, payouts, and timelines.
 
-## Spec
+The platform is built around the belief that insurance should be **human-first**: clear language, honest numbers, and a direct path to getting covered.
 
-Design a luxury aesthetic using a palette of Cream (#FDFCF9) for backgrounds, Charcoal (#1A1A1A) for primary text and dark sections, Warm Taupe (#8B7D6B) for borders and accents, and Gold (#D4AF37) for highlights. Typography: Headlines in 'Cabinet Grotesk' (Bold, 700-800 weight), body text in 'Satoshi' (Regular 400, Medium 500). Use consistent border radii of 24px for cards and 12px for buttons. Include backdrop-blur (10px) on sticky navigation. Implement hover states: buttons should transition opacity 90% or scale 102%; image cards should use scale(1.05) on hover with a 500ms ease-in-out curve. Borders should be subtle (1px, 20% opacity of Taupe).
+---
 
-# Layout & Structure
+## ✨ Features
 
-A vertical-scrolling landing page structure beginning with a 2-column hero and moving into structured content grids (stats, properties, process) before concluding with a dark-themed lead capture section.
+| Feature | Description |
+|---|---|
+| 🏠 **Homepage** | Animated hero with typed headline, rotating quote bar, and plan showcase |
+| 📋 **Insurance Plans** | 7 curated plans — endowment, annuity, savings, car, family, investment & retirement |
+| 📅 **Book a Call** | WhatsApp-linked consultation booking with advisor profile |
+| 📊 **Visitor Analytics** | Real-time page visit and scroll-depth tracking via Supabase |
+| 🔝 **Scroll Enhancements** | Global top progress bar and circular back-to-top button |
+| 📱 **Fully Responsive** | Mobile-first layout with touch-friendly navigation and mobile drawer |
+| ♿ **Accessible** | Reduced-motion support, semantic HTML, ARIA labels throughout |
+| 🔐 **Secure** | HTTP security headers, RLS-enabled Supabase, no secrets in source |
 
-## Navigation Bar
+---
 
-Sticky header (h-20) with #FFFFFF/95 background and backdrop-blur. Left: Uppercase logo with a small charcoal square icon. Center: Nav links with a 1px charcoal underline that expands from center on hover. Right: 'Book a Call' text link with phone icon and a primary 'Register' button (bg-charcoal, text-white, px-6, py-2.5, rounded-sm).
+## 🗂️ Insurance Plans Offered
 
-## Hero Section
+1. **Flexible Endowment Plan** — Savings, investment & protection in one policy. From ₦1.8M/yr.
+2. **Deferred Annuity** — Save today, earn guaranteed income at retirement.
+3. **Immediate Annuity** — Convert a lump sum into monthly income for life.
+4. **Investment Savings Plan** — Market-linked growth with a capital protection floor.
+5. **Whole Life Plan** — Lifetime cover with a growing cash value component.
+6. **Motor Insurance** — Third-party and comprehensive vehicle cover.
+7. **Family Protection Plan** — Term life cover designed around family obligations.
 
-2-column layout. Left: H1 (text-7xl) with a mix of bold and italic neutral-400 text; body paragraph (text-lg, text-neutral-600); social proof stack with three avatar images and a '+2k' badge. Right: Large aspect-[4/3] image with 3xl rounded corners and a shadow-2xl. Floating Search Bar: Overlapping the bottom of the image, 90% width, white background, 4-column grid (Location, Type, Price, Search Button) separated by thin taupe borders.
+---
 
-## About & Statistics
+## 🛠️ Tech Stack
 
-Section with a 2-column header (Title left, Stats right). Stats: Three items showing bold 4xl numbers and uppercase tracking-widest subtext. Below: 3-column card grid. Each card: p-8, border-taupe, icon in a neutral-100 rounded-xl square that turns charcoal on group-hover.
+| Layer | Technology |
+|---|---|
+| **Framework** | [TanStack Start](https://tanstack.com/start) + [React 19](https://react.dev/) |
+| **Language** | TypeScript 5.8 |
+| **Styling** | Tailwind CSS v4 + Vanilla CSS |
+| **UI Components** | shadcn/ui (Radix UI primitives) |
+| **Routing** | TanStack Router (file-based) |
+| **Backend / DB** | [Supabase](https://supabase.com/) (PostgreSQL + RLS) |
+| **Build Tool** | Vite 7 |
+| **Icons** | Lucide React |
 
-## Featured Properties
+---
 
-3x2 grid of property cards. Each card: aspect-[4/3] image with a wishlist heart icon (top-right, blur-background) and a 'New Listing' badge (bottom-left). Below image: Title (text-xl), Location (icon + text), and bold Price. Bottom: Icon row for Bed/Bath/Sqft separated by a thin top border.
+## 🚀 Getting Started
 
-## How It Works
+### Prerequisites
 
-4-column grid. Each step: bg-neutral-50, p-10, 2xl rounded. Top-right: Large overlay text (01, 02, etc.) in 10% opacity charcoal. Center-left: Gold icon (#D4AF37). Content: Bold H4 and description text.
+- Node.js 18+
+- npm 9+
+- A [Supabase](https://supabase.com) project (free tier works fine)
 
-## CTA Lead Capture
-
-Dark section (bg-charcoal, text-white) with a subtle radial dot grid background (10% opacity). Left: H2 (text-6xl) and subtext. Right: White card (p-10, 3xl rounded) containing a contact form. Inputs: border-b only (no boxes), uppercase tracking-wider labels, charcoal text focus. Button: Full-width charcoal, py-4, with a flight/send icon that translates on hover.
-
-# Special Components
-
-## Floating Search Bar
-
-An interactive filter bar that overlaps hero images.
-
-Container: bg-white, p-6, rounded-2xl, shadow-xl, border border-taupe. Structure: 4 segments. Segments 1-3: Label (uppercase, 10px, tracking-widest, neutral-400) above a bold value. Segment 4: Primary search button (bg-charcoal, text-white, h-full, rounded-xl, flex center gap-2).
-
-## Property Specs Bar
-
-Small icons with metadata at the bottom of property cards.
-
-Flex row, gap-6, border-t border-taupe, pt-4. Elements: Iconify icons (bed, bath, maximize) followed by 'X Beds', 'Y Baths', 'Z sqft' in text-sm neutral-500.
-
-# Special Notes
-
-MUST use 'Cabinet Grotesk' for all headings to maintain the luxury feel. MUST maintain a minimum of 96px (24 units) of vertical padding between major sections. MUST NOT use bright colors outside the defined gold accent. DO ensure all image containers have a consistent overflow-hidden property to facilitate the zoom animation."
-
-## Development
-
-Prefer working locally? You need Node.js and npm:
+### Installation
 
 ```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
+# 1. Clone the repository
+git clone https://github.com/Ukezi-Ebenezer/Smart-cover.git
+cd Smart-cover
+
+# 2. Install dependencies
+npm install
+
+# 3. Set up environment variables
+cp .env.example .env
+# Fill in your Supabase credentials in .env
+
+# 4. Start the development server
 npm run dev
 ```
+
+The app will be available at **http://localhost:8080**.
+
+### Environment Variables
+
+Copy `.env.example` to `.env` and fill in your values:
+
+```env
+SUPABASE_PROJECT_ID=your_project_id
+SUPABASE_URL=https://your_project_id.supabase.co
+VITE_SUPABASE_URL=https://your_project_id.supabase.co
+VITE_SUPABASE_PUBLISHABLE_KEY=your_anon_key
+```
+
+> ⚠️ **Never commit your real `.env` file.** It is already in `.gitignore`.
+
+---
+
+## 🗄️ Database Setup (Supabase)
+
+Run the following SQL in your Supabase **SQL Editor** to create the visitor tracking table:
+
+```sql
+CREATE TABLE IF NOT EXISTS page_visits (
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  session_id  UUID NOT NULL,
+  page        TEXT NOT NULL,
+  referrer    TEXT,
+  max_scroll  NUMERIC DEFAULT 0,
+  visited_at  TIMESTAMPTZ DEFAULT NOW(),
+  updated_at  TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Enable Row Level Security
+ALTER TABLE page_visits ENABLE ROW LEVEL SECURITY;
+
+-- Allow anonymous inserts and updates (visitor tracking)
+CREATE POLICY "Allow public insert" ON page_visits FOR INSERT TO public WITH CHECK (true);
+CREATE POLICY "Allow public update" ON page_visits FOR UPDATE TO public USING (true);
+CREATE POLICY "Allow public select" ON page_visits FOR SELECT TO public USING (true);
+```
+
+---
+
+## 📁 Project Structure
+
+```
+smart-cover/
+├── src/
+│   ├── assets/              # Images and static assets
+│   ├── components/
+│   │   ├── ui/              # shadcn/ui base components
+│   │   ├── site-header.tsx  # Global navigation header
+│   │   ├── site-footer.tsx  # Global footer
+│   │   └── scroll-enhancements.tsx  # Progress bar & back-to-top
+│   ├── hooks/
+│   │   └── use-visitor-tracker.ts   # Supabase analytics hook
+│   ├── integrations/supabase/       # Supabase client & auth
+│   ├── lib/                 # Utilities and server config
+│   ├── routes/
+│   │   ├── __root.tsx       # App shell (header, footer, tracking)
+│   │   ├── index.tsx        # Homepage
+│   │   └── book.tsx         # Book a consultation page
+│   ├── styles.css           # Global design system & animations
+│   ├── router.tsx           # Router configuration
+│   └── server.ts            # TanStack Start server entry
+├── .env.example             # Safe environment variable template
+├── .gitignore
+├── vite.config.ts
+├── tsconfig.json
+└── package.json
+```
+
+---
+
+## 📜 Available Scripts
+
+| Command | Description |
+|---|---|
+| `npm run dev` | Start development server with hot reload |
+| `npm run build` | Build production bundle |
+| `npm run preview` | Preview the production build locally |
+| `npm run lint` | Run ESLint |
+| `npm run format` | Format code with Prettier |
+
+---
+
+## 🤝 Contact & Consultation
+
+Want to get covered or learn more?
+
+- 💬 **WhatsApp**: [Chat with an advisor](https://wa.link/mvnpxr)
+- 📅 **Book a Call**: Visit the `/book` page on the site
+
+---
+
+## 📄 License
+
+This project is privately maintained. All rights reserved © Smart Cover.
