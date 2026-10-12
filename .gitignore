@@ -22,6 +22,7 @@ dist-ssr
 /build
 /coverage
 .vercel
+.netlify
 
 # Environment variables & secrets
 .env
