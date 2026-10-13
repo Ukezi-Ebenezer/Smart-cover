@@ -1,7 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   ArrowUpRight,
   Shield,
@@ -35,10 +33,6 @@ import planAnnuity from "@/assets/plan-annuity.jpg";
 import planInvestment from "@/assets/plan-investment.jpg";
 import planSavings from "@/assets/plan-savings.jpg";
 import planCar from "@/assets/plan-car.jpg";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -344,166 +338,183 @@ function Home() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
+    let ctx: { revert: () => void } | null = null;
+    let cancelled = false;
+
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const isMotionOff = document.documentElement.classList.contains("motion-off");
 
-    if (reduceMotion || isMotionOff || !motionEnabled) {
-      // Set reading layout directly
-      if (curtainsLeftRef.current) gsap.set(curtainsLeftRef.current, { xPercent: -101 });
-      if (curtainsRightRef.current) gsap.set(curtainsRightRef.current, { xPercent: 101 });
-      if (heroFinalRef.current) gsap.set(heroFinalRef.current, { autoAlpha: 1, y: 0 });
-      return;
-    }
+    Promise.all([
+      import("gsap"),
+      import("gsap/ScrollTrigger"),
+    ]).then(([gsapModule, scrollTriggerModule]) => {
+      if (cancelled) return;
 
-    const ctx = gsap.context(() => {
-      const isMobile = window.innerWidth <= 640;
+      const gsap = (gsapModule.default || gsapModule) as any;
+      const ScrollTrigger = (scrollTriggerModule.default || scrollTriggerModule) as any;
+      gsap.registerPlugin(ScrollTrigger);
 
-      // Initial States
-      gsap.set(heroFinalRef.current, { autoAlpha: 0, y: 40 });
-      gsap.set(".hero-horizon", { xPercent: 25, opacity: 0 });
+      if (reduceMotion || isMotionOff || !motionEnabled) {
+        // Set reading layout directly
+        if (curtainsLeftRef.current) gsap.set(curtainsLeftRef.current, { xPercent: -101 });
+        if (curtainsRightRef.current) gsap.set(curtainsRightRef.current, { xPercent: 101 });
+        if (heroFinalRef.current) gsap.set(heroFinalRef.current, { autoAlpha: 1, y: 0 });
+        return;
+      }
 
-      // Opening Sequence Timeline
-      const introTl = gsap.timeline({
-        id: "opening-entrance",
-        defaults: { ease: "power3.out" },
-      });
+      ctx = gsap.context(() => {
+        const isMobile = window.innerWidth <= 640;
 
-      introTl
-        .fromTo(
-          curtainsLeftRef.current,
-          { xPercent: 0 },
-          { xPercent: -101, duration: 1.25, ease: "power3.inOut" },
-          0
-        )
-        .fromTo(
-          curtainsRightRef.current,
-          { xPercent: 0 },
-          { xPercent: 101, duration: 1.25, ease: "power3.inOut" },
-          0
-        )
-        .fromTo(
-          ".hero-portrait-card",
-          { y: 80, scale: 0.88, opacity: 0 },
-          { y: 0, scale: 1, opacity: 1, duration: 1.5 },
-          0.1
-        )
-        .fromTo(
-          nameFirstRef.current,
-          { xPercent: -50, opacity: 0 },
-          { xPercent: 0, opacity: 1, duration: 1.5 },
-          0.05
-        )
-        .fromTo(
-          nameLastRef.current,
-          { xPercent: 50, opacity: 0 },
-          { xPercent: 0, opacity: 1, duration: 1.5 },
-          0.15
-        )
-        .fromTo(
-          ".satellite-one",
-          { x: -120, y: 80, scale: 0.4, opacity: 0, rotation: 18 },
-          { x: 0, y: 0, scale: 1, opacity: 1, rotation: -7, duration: 1.4 },
-          0.3
-        )
-        .fromTo(
-          ".satellite-two",
-          { x: 120, y: -80, scale: 0.4, opacity: 0, rotation: -20 },
-          { x: 0, y: 0, scale: 1, opacity: 1, rotation: 6, duration: 1.4 },
-          0.38
-        )
-        .fromTo(
-          ".satellite-three",
-          { y: 60, scale: 0.4, opacity: 0 },
-          { y: 0, scale: 1, opacity: 1, duration: 1.2 },
-          0.5
-        )
-        .fromTo(
-          [introCopyRef.current, introNoteRef.current],
-          { y: 35, opacity: 0 },
-          { y: 0, opacity: 1, stagger: 0.1, duration: 0.9 },
-          0.6
-        )
-        .fromTo(
-          [".hero-offer-tag", ".hero-bottom"],
-          { opacity: 0 },
-          { opacity: 1, duration: 0.7 },
-          0.4
-        );
+        // Initial States
+        gsap.set(heroFinalRef.current, { autoAlpha: 0, y: 40 });
+        gsap.set(".hero-horizon", { xPercent: 25, opacity: 0 });
 
-      // Hero Scroll Scrub Timeline
-      if (heroSequenceRef.current) {
-        const heroScrollTl = gsap.timeline({
-          id: "hero-scroll",
-          scrollTrigger: {
-            trigger: heroSequenceRef.current,
-            start: "top top",
-            end: "bottom bottom",
-            scrub: 0.6,
-          },
+        // Opening Sequence Timeline
+        const introTl = gsap.timeline({
+          id: "opening-entrance",
+          defaults: { ease: "power3.out" },
         });
 
-        heroScrollTl
-          .to(satellitesRef.current, { scale: 1.85, autoAlpha: 0, duration: 0.35 }, 0)
-          .to(".opening-name", { scale: 1.9, autoAlpha: 0, duration: 0.45 }, 0)
-          .to([introCopyRef.current, introNoteRef.current], { y: -50, autoAlpha: 0, duration: 0.25 }, 0)
-          .to(
-            portraitTravelRef.current,
-            {
-              left: isMobile ? "50%" : "26%",
-              top: isMobile ? "32%" : "52%",
-              scale: isMobile ? 0.74 : 0.88,
-              duration: 0.65,
-              ease: "power2.inOut",
-            },
+        introTl
+          .fromTo(
+            curtainsLeftRef.current,
+            { xPercent: 0 },
+            { xPercent: -101, duration: 1.25, ease: "power3.inOut" },
+            0
+          )
+          .fromTo(
+            curtainsRightRef.current,
+            { xPercent: 0 },
+            { xPercent: 101, duration: 1.25, ease: "power3.inOut" },
+            0
+          )
+          .fromTo(
+            ".hero-portrait-card",
+            { y: 80, scale: 0.88, opacity: 0 },
+            { y: 0, scale: 1, opacity: 1, duration: 1.5 },
+            0.1
+          )
+          .fromTo(
+            nameFirstRef.current,
+            { xPercent: -50, opacity: 0 },
+            { xPercent: 0, opacity: 1, duration: 1.5 },
             0.05
           )
-          .to(heroFinalRef.current, { autoAlpha: 1, y: 0, duration: 0.4 }, 0.28)
-          .to(".hero-horizon", { xPercent: -8, opacity: 1, duration: 0.7 }, 0.15)
-          .to(".hero-scroll", { opacity: 0, duration: 0.15 }, 0.1)
-          .to(".cinema-grid", { scale: 1.6, opacity: 0.15, duration: 1 }, 0);
-      }
+          .fromTo(
+            nameLastRef.current,
+            { xPercent: 50, opacity: 0 },
+            { xPercent: 0, opacity: 1, duration: 1.5 },
+            0.15
+          )
+          .fromTo(
+            ".satellite-one",
+            { x: -120, y: 80, scale: 0.4, opacity: 0, rotation: 18 },
+            { x: 0, y: 0, scale: 1, opacity: 1, rotation: -7, duration: 1.4 },
+            0.3
+          )
+          .fromTo(
+            ".satellite-two",
+            { x: 120, y: -80, scale: 0.4, opacity: 0, rotation: -20 },
+            { x: 0, y: 0, scale: 1, opacity: 1, rotation: 6, duration: 1.4 },
+            0.38
+          )
+          .fromTo(
+            ".satellite-three",
+            { y: 60, scale: 0.4, opacity: 0 },
+            { y: 0, scale: 1, opacity: 1, duration: 1.2 },
+            0.5
+          )
+          .fromTo(
+            [introCopyRef.current, introNoteRef.current],
+            { y: 35, opacity: 0 },
+            { y: 0, opacity: 1, stagger: 0.1, duration: 0.9 },
+            0.6
+          )
+          .fromTo(
+            [".hero-offer-tag", ".hero-bottom"],
+            { opacity: 0 },
+            { opacity: 1, duration: 0.7 },
+            0.4
+          );
 
-      // Founder Story Sequence ScrollTrigger (Auto-transitions chapters 01 -> 02 -> 03 as user scrolls)
-      if (storySequenceRef.current) {
-        ScrollTrigger.create({
-          id: "story-scroll",
-          trigger: storySequenceRef.current,
-          start: "top top",
-          end: "bottom bottom",
-          scrub: 0.4,
-          onUpdate: (self) => {
-            const p = self.progress;
-            const newIndex = p < 0.333 ? 0 : p < 0.667 ? 1 : 2;
-            setActiveChapter((prev) => (prev !== newIndex ? newIndex : prev));
+        // Hero Scroll Scrub Timeline
+        if (heroSequenceRef.current) {
+          const heroScrollTl = gsap.timeline({
+            id: "hero-scroll",
+            scrollTrigger: {
+              trigger: heroSequenceRef.current,
+              start: "top top",
+              end: "bottom bottom",
+              scrub: 0.6,
+            },
+          });
 
-            if (scrubberRef.current) {
-              scrubberRef.current.value = String(Math.round(p * 1000));
-              scrubberRef.current.style.setProperty(
-                "--story-progress",
-                `${(p * 100).toFixed(1)}%`
-              );
-            }
-          },
-        });
-      }
+          heroScrollTl
+            .to(satellitesRef.current, { scale: 1.85, autoAlpha: 0, duration: 0.35 }, 0)
+            .to(".opening-name", { scale: 1.9, autoAlpha: 0, duration: 0.45 }, 0)
+            .to([introCopyRef.current, introNoteRef.current], { y: -50, autoAlpha: 0, duration: 0.25 }, 0)
+            .to(
+              portraitTravelRef.current,
+              {
+                left: isMobile ? "50%" : "26%",
+                top: isMobile ? "32%" : "52%",
+                scale: isMobile ? 0.74 : 0.88,
+                duration: 0.65,
+                ease: "power2.inOut",
+              },
+              0.05
+            )
+            .to(heroFinalRef.current, { autoAlpha: 1, y: 0, duration: 0.4 }, 0.28)
+            .to(".hero-horizon", { xPercent: -8, opacity: 1, duration: 0.7 }, 0.15)
+            .to(".hero-scroll", { opacity: 0, duration: 0.15 }, 0.1)
+            .to(".cinema-grid", { scale: 1.6, opacity: 0.15, duration: 1 }, 0);
+        }
 
-      // Replay Trigger Listener
-      const handleReplay = () => {
-        setCurtainsOpened(false);
-        window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
-        introTl.restart();
-        setTimeout(() => {
-          setCurtainsOpened(true);
-        }, 1300);
-      };
-      window.addEventListener("smartcover:replay", handleReplay);
+        // Founder Story Sequence ScrollTrigger (Auto-transitions chapters 01 -> 02 -> 03 as user scrolls)
+        if (storySequenceRef.current) {
+          ScrollTrigger.create({
+            id: "story-scroll",
+            trigger: storySequenceRef.current,
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 0.4,
+            onUpdate: (self: any) => {
+              const p = self.progress;
+              const newIndex = p < 0.333 ? 0 : p < 0.667 ? 1 : 2;
+              setActiveChapter((prev) => (prev !== newIndex ? newIndex : prev));
 
-      return () => {
-        window.removeEventListener("smartcover:replay", handleReplay);
-      };
+              if (scrubberRef.current) {
+                scrubberRef.current.value = String(Math.round(p * 1000));
+                scrubberRef.current.style.setProperty(
+                  "--story-progress",
+                  `${(p * 100).toFixed(1)}%`
+                );
+              }
+            },
+          });
+        }
+
+        // Replay Trigger Listener
+        const handleReplay = () => {
+          setCurtainsOpened(false);
+          window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
+          introTl.restart();
+          setTimeout(() => {
+            setCurtainsOpened(true);
+          }, 1300);
+        };
+        window.addEventListener("smartcover:replay", handleReplay);
+
+        return () => {
+          window.removeEventListener("smartcover:replay", handleReplay);
+        };
+      });
     });
 
-    return () => ctx.revert();
+    return () => {
+      cancelled = true;
+      if (ctx) ctx.revert();
+    };
   }, [motionEnabled]);
 
   // Story sequence chapter switcher & smooth scroll navigation

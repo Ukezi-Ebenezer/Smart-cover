@@ -18,4 +18,7 @@ export default defineConfig(({ command }) => ({
       "@": "/src",
     },
   },
+  ssr: {
+    noExternal: ["gsap"],
+  },
 }));
