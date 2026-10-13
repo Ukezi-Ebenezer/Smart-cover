@@ -5,17 +5,17 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   plugins: [
     tsconfigPaths({ projects: ["./tsconfig.json"] }),
     tailwindcss(),
-    netlifyPlugin(),
+    command === "build" ? netlifyPlugin() : null,
     tanstackStart(),
     react(),
-  ],
+  ].filter(Boolean),
   resolve: {
     alias: {
       "@": "/src",
     },
   },
-});
+}));

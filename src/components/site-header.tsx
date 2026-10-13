@@ -1,12 +1,15 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Phone, Menu, X } from "lucide-react";
+import { Phone, Menu, X, ArrowUpRight } from "lucide-react";
+import { useMotionPreference } from "@/hooks/use-motion-preference";
 
 const NAV_ITEMS = [
   { id: "home", to: "/#home", label: "Home" },
-  { id: "plans", to: "/#plans", label: "Plans" },
-  { id: "about", to: "/#about", label: "About" },
-  { id: "process", to: "/#process", label: "Process" },
+  { id: "plans", to: "/#plans", label: "Advisory Plans" },
+  { id: "story", to: "/#story", label: "Insurance Tips" },
+  { id: "why-cover", to: "/#why-cover", label: "Why Cover" },
+  { id: "calculator", to: "/#calculator", label: "Calculator" },
+  { id: "resources", to: "/#resources", label: "Resources" },
 ];
 
 export function SiteHeader() {
@@ -14,6 +17,7 @@ export function SiteHeader() {
   const isBookPage = location.pathname === "/book";
   const [activeSection, setActiveSection] = useState("home");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { motionEnabled, isSystemReduced, toggleMotion } = useMotionPreference();
 
   useEffect(() => {
     if (isBookPage) {
@@ -22,15 +26,15 @@ export function SiteHeader() {
     }
 
     const handleScroll = () => {
-      const scrollPos = window.scrollY + 140;
-      const sections = ["process", "plans", "about", "home"];
+      const scrollPos = window.scrollY + 180;
+      const sections = ["resources", "calculator", "why-cover", "story", "plans", "home"];
 
       for (const sectionId of sections) {
         const el = document.getElementById(sectionId);
         if (el) {
           const top = el.offsetTop;
           const height = el.offsetHeight;
-          if (scrollPos >= top && scrollPos < top + height + 100) {
+          if (scrollPos >= top && scrollPos < top + height) {
             setActiveSection(sectionId);
             return;
           }
@@ -48,18 +52,22 @@ export function SiteHeader() {
   }, [isBookPage]);
 
   return (
-    <header className="sticky top-0 z-50 h-20 border-b hairline bg-white/95 backdrop-blur-[10px]">
+    <header className="sticky top-0 z-50 h-20 border-b hairline bg-background/90 backdrop-blur-md transition-all duration-300">
       <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-6 lg:px-10">
-        {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 group">
-          <span className="block h-5 w-5 bg-charcoal transition-transform group-hover:scale-110" style={{ backgroundColor: "var(--charcoal)" }} />
-          <span className="font-display text-lg font-bold uppercase tracking-[0.18em]">
-            SMART COVER
+        {/* Brand Wordmark */}
+        <Link to="/" className="flex items-center gap-2.5 group">
+          <span
+            className="block h-3.5 w-3.5 rounded-full transition-transform group-hover:scale-125"
+            style={{ backgroundColor: "var(--gold)" }}
+            aria-hidden="true"
+          />
+          <span className="font-serif text-2xl font-bold tracking-tight text-foreground sm:text-[26px]">
+            Smart Cover<span style={{ color: "var(--gold)" }}>.</span>
           </span>
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-7 lg:flex" aria-label="Main navigation">
           {NAV_ITEMS.map((item) => {
             const isActive = !isBookPage && activeSection === item.id;
             return (
@@ -67,16 +75,16 @@ export function SiteHeader() {
                 key={item.id}
                 href={item.to}
                 onClick={() => setActiveSection(item.id)}
-                className={`relative py-1.5 text-sm font-medium transition-all duration-200 ${
+                className={`relative py-1 text-sm font-medium transition-colors ${
                   isActive
-                    ? "text-blue-600 font-bold"
-                    : "text-charcoal/70 hover:text-charcoal"
+                    ? "text-foreground font-semibold"
+                    : "text-foreground/70 hover:text-foreground"
                 }`}
               >
                 {item.label}
                 {isActive && (
                   <span
-                    className="absolute -bottom-1 left-0 right-0 h-[2.5px] rounded-full bg-blue-600 shadow-[0_1px_6px_rgba(37,99,235,0.4)]"
+                    className="absolute -bottom-1.5 left-0 right-0 h-[2px] rounded-full bg-foreground shadow-sm"
                     aria-hidden="true"
                   />
                 )}
@@ -86,43 +94,69 @@ export function SiteHeader() {
         </nav>
 
         {/* Right Actions */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 sm:gap-4">
+          {/* Motion Toggle Button */}
+          <button
+            type="button"
+            onClick={toggleMotion}
+            aria-pressed={motionEnabled}
+            disabled={isSystemReduced}
+            aria-label={
+              isSystemReduced
+                ? "Reduced motion set by device preferences"
+                : motionEnabled
+                ? "Pause animations"
+                : "Play animations"
+            }
+            title={
+              isSystemReduced
+                ? "Reduced motion active"
+                : motionEnabled
+                ? "Pause motion (Reduced motion)"
+                : "Play motion"
+            }
+            className="flex h-9 w-9 items-center justify-center rounded-full border hairline bg-card text-foreground transition-all hover:border-foreground/40 active:scale-95 disabled:opacity-50"
+          >
+            <span className="text-xs font-mono font-bold" aria-hidden="true">
+              {motionEnabled ? "Ⅱ" : "▶"}
+            </span>
+          </button>
+
+          {/* Quick Call */}
           <a
             href="https://wa.link/mvnpxr"
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden items-center gap-2 text-sm font-medium sm:inline-flex text-charcoal hover:text-blue-600 transition-colors"
+            className="hidden items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors sm:inline-flex"
           >
-            <Phone className="h-4 w-4 text-emerald-600" />
-            Book a Call
+            <Phone className="h-3.5 w-3.5 text-emerald-600" />
+            <span className="hidden xl:inline">WhatsApp</span>
           </a>
 
+          {/* Primary CTA */}
           <Link
             to="/book"
-            className={`inline-flex items-center justify-center rounded-[12px] px-6 py-2.5 text-sm font-medium transition-all duration-200 ${
-              isBookPage
-                ? "bg-blue-600 text-white ring-2 ring-blue-600 ring-offset-2"
-                : "bg-foreground text-background hover:opacity-90"
-            }`}
+            className="inline-flex min-h-[40px] items-center gap-1.5 rounded-full bg-foreground px-5 py-2 text-xs font-semibold uppercase tracking-wider text-background transition-all hover:opacity-90 active:scale-[0.98]"
           >
-            Get a Quote
+            Work with me
+            <ArrowUpRight className="h-3.5 w-3.5" />
           </Link>
 
-          {/* Mobile hamburger button */}
+          {/* Mobile Menu Button */}
           <button
             type="button"
             onClick={() => setMobileMenuOpen((prev) => !prev)}
             aria-label="Toggle navigation menu"
-            className="inline-flex md:hidden p-2 rounded-lg text-charcoal hover:bg-muted"
+            className="inline-flex lg:hidden p-2 rounded-lg text-foreground hover:bg-muted"
           >
-            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Drawer Menu */}
+      {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-b hairline bg-background px-6 py-4 space-y-2 shadow-lg animate-in slide-in-from-top-2 duration-200">
+        <div className="lg:hidden border-b hairline bg-background px-6 py-4 space-y-2 shadow-xl animate-in slide-in-from-top-2 duration-200">
           {NAV_ITEMS.map((item) => {
             const isActive = !isBookPage && activeSection === item.id;
             return (
@@ -133,29 +167,26 @@ export function SiteHeader() {
                   setActiveSection(item.id);
                   setMobileMenuOpen(false);
                 }}
-                className={`flex items-center justify-between rounded-xl px-4 py-3 text-base font-medium transition-colors ${
+                className={`flex items-center justify-between rounded-xl px-4 py-2.5 text-sm font-medium transition-colors ${
                   isActive
-                    ? "bg-blue-50 text-blue-600 font-bold border-l-4 border-blue-600"
-                    : "text-foreground hover:bg-muted"
+                    ? "bg-foreground/5 text-foreground font-bold border-l-2 border-foreground"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 }`}
               >
                 <span>{item.label}</span>
-                {isActive && (
-                  <span className="h-2 w-2 rounded-full bg-blue-600" />
-                )}
+                {isActive && <span className="h-1.5 w-1.5 rounded-full bg-foreground" />}
               </a>
             );
           })}
-          <div className="pt-2 border-t hairline">
-            <a
-              href="https://wa.link/mvnpxr"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-3 text-base font-medium text-charcoal hover:bg-muted rounded-xl"
+          <div className="pt-2 border-t hairline flex items-center justify-between px-2">
+            <span className="text-xs text-muted-foreground">Animation motion:</span>
+            <button
+              type="button"
+              onClick={toggleMotion}
+              className="px-3 py-1 text-xs rounded-full border hairline font-medium"
             >
-              <Phone className="h-4 w-4 text-emerald-600" />
-              Book a Call (WhatsApp)
-            </a>
+              {motionEnabled ? "Motion: ON (Pause)" : "Motion: OFF (Play)"}
+            </button>
           </div>
         </div>
       )}
